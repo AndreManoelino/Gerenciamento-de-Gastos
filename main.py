@@ -22,8 +22,6 @@ co7 = "#3fbfb9"
 co8 = "#263238"
 co9 = "#e9edf5"
 
-
-
 # Convertendo cores hexadecimais para RGB
 def hex_to_rgb(hex_color):
     return tuple(int(hex_color[i:i+2], 16) / 255.0 for i in (1, 3, 5))
@@ -128,28 +126,28 @@ def resumo():
 
     l_linha = Label(frameMeio, text="", width=215,height=1, anchor=NW, font=('Arial 1'), bg=co0)
     l_linha.place(x=309, y=52)
-    l_sumario = Label(frameMeio, text="total Renda Mensal ".upper(), anchor=NW, font=('Verdana 12'), bg=co1, fg=co5)
+    l_sumario = Label(frameMeio, text="total Renda Mensal      ".upper(), anchor=NW, font=('Verdana 12'), bg=co1, fg=co5)
     l_sumario.place(x=309, y=35)
     l_sumario = Label(frameMeio, text="R${:,.2f}".format(valor[0]), anchor=NW, font=('arial 17') ,bg=co1, fg=co7)
     l_sumario.place(x=309, y=70)
 
     l_linha = Label(frameMeio, text="", width=215,height=1, anchor=NW, font=('Arial 1'), bg=co0)
     l_linha.place(x=309, y=132)
-    l_sumario = Label(frameMeio, text="total Despesas Mensais ".upper(), anchor=NW, font=('Verdana 12'), bg=co1, fg=co5)
+    l_sumario = Label(frameMeio, text="total Despesas Mensais      ".upper(), anchor=NW, font=('Verdana 12'), bg=co1, fg=co5)
     l_sumario.place(x=309, y=115)
     l_sumario = Label(frameMeio, text="R${:,.2f}".format(valor[1]), anchor=NW, font=('arial 17') ,bg=co1, fg=co7)
     l_sumario.place(x=309, y=150)
 
     l_linha = Label(frameMeio, text="", width=215,height=1, anchor=NW, font=('Arial 1'), bg=co0)
     l_linha.place(x=309, y=207)
-    l_sumario = Label(frameMeio, text="total Saldo  ".upper(), anchor=NW, font=('Verdana 12'), bg=co1, fg=co5)
+    l_sumario = Label(frameMeio, text="total Saldo                      ".upper(), anchor=NW, font=('Verdana 12'), bg=co1, fg=co5) # sando essa quantidade de backspace para cobrimento da barra 
     l_sumario.place(x=309, y=190)
     l_sumario = Label(frameMeio, text="R${:,.2f}".format(valor[2]), anchor=NW, font=('arial 17') ,bg=co1, fg=co7)
     l_sumario.place(x=309, y=220)
 
 # funçãp gráfico pie
 def grafico_pie():
-   # Criando  figura e atribuindo  objetos de eixo
+    # Criando  figura e atribuindo  objetos de eixo
     figura = plt.Figure(figsize=(5, 3), dpi=90)
     ax = figura.add_subplot(111)
 
@@ -169,9 +167,58 @@ def grafico_pie():
     canva_categoria.get_tk_widget().grid(row=0, column=0)
 
 
-
 grafico_pie()
 resumo()
 porcentagem()
 grafico_bar()
+
+#Criando frames dentro do frame Baixo
+frame_renda = Frame(frameBaixo, width=300, height=205, bg=co1)
+frame_renda.grid(row=0, column=0)
+
+frame_operacoes = Frame(frameBaixo, width=220, height=250, bg=co1)
+frame_operacoes.grid(row=0, column=0, padx=5)
+
+frame_configuracao = Frame(frameBaixo, width=220, height=250, bg=co1)
+frame_configuracao.grid(row=0, column=2, padx=5)
+
+#Tabela Renda Mensal
+
+app_tabela = Label(frameMeio, text="Tabela de Despesa", anchor=NW,font=('Verdana 12'), bg=co1, fg=co4 )
+app_tabela.place(x=5, y=309)
+
+#função mostrar renda
+def mostrar_renda():
+    tabela_head = ['#id', 'Categoria', 'Data', 'Quantia']
+    lista_items = [[0, 'Categoria A', '2024-04-27', 1000],
+                   [1, 'Categoria B', '2024-04-27', 1500],
+                   [2, 'Categoria C', '2024-04-27', 2000],
+                   [3, 'Categoria D', '2024-04-27', 2500]]
+
+    global UnicodeTranslateError
+    tree = ttk.Treeview(frame_renda, selectmode="extended", columns=tabela_head, show="headings")
+
+    vsb = ttk.Scrollbar(frame_renda, orient="vertical", command=tree.yview)
+    hsb = ttk.Scrollbar(frame_renda, orient="horizontal", command=tree.xview)
+
+    tree.configure(yscrollcommand=vsb.set, xscrollcommand=hsb.set)
+
+    tree.grid(column=0, row=0, stick='nsew')
+    vsb.grid(column=1, row=0, sticky='ns')
+    hsb.grid(column=0, row=1, stick='ew')
+
+    hd=["center", "center", "center", "center"]
+    h=[30,150,100,60]
+    n =0
+
+    for col in tabela_head:
+        tree.heading(col, text=col.title(), anchor=CENTER)
+        tree.column(col, width=h[n], anchor=hd[n])
+
+        n+=1
+    for item in lista_items:
+        tree.insert(' ', 'end', values=item)
+
+mostrar_renda()
+
 janela.mainloop()
