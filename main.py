@@ -119,7 +119,7 @@ def grafico_bar():
 # criando uma função de resumo total
 
 def resumo():
-    valor = [1800,1650,150 ]
+    valor = [1800,1650,150]
 
     l_linha = Label(frameMeio, text="", width=215,height=1, anchor=NW, font=('Arial 1'), bg=co0)
     l_linha.place(x=309, y=52)
