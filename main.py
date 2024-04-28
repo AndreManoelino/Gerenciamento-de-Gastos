@@ -119,11 +119,30 @@ def grafico_bar():
 # criando uma função de resumo total
 
 def resumo():
-    valor = [500,600,420 ]
+    valor = [1800,1650,150 ]
 
-    l_linha = Label(frameMeio, text="", width=215,height=1, anchor=NW, fonr=('Arial 1'), bg=co0)
-    l_linha.place(x=309,y=52)
+    l_linha = Label(frameMeio, text="", width=215,height=1, anchor=NW, font=('Arial 1'), bg=co0)
+    l_linha.place(x=309, y=52)
+    l_sumario = Label(frameMeio, text="total Renda Mensal      ".upper(), anchor=NW, font=('Verdana 12'), bg=co1, fg=co5)
+    l_sumario.place(x=309, y=35)
+    l_sumario = Label(frameMeio, text="R${:,.2f}".format(valor[0]), anchor=NW, font=('arial 17') ,bg=co1, fg=co7)
+    l_sumario.place(x=309, y=70)
 
+    l_linha = Label(frameMeio, text="", width=215,height=1, anchor=NW, font=('Arial 1'), bg=co0)
+    l_linha.place(x=309, y=132)
+    l_sumario = Label(frameMeio, text="total Despesas Mensais      ".upper(), anchor=NW, font=('Verdana 12'), bg=co1, fg=co5)
+    l_sumario.place(x=309, y=115)
+    l_sumario = Label(frameMeio, text="R${:,.2f}".format(valor[1]), anchor=NW, font=('arial 17') ,bg=co1, fg=co7)
+    l_sumario.place(x=309, y=150)
+
+    l_linha = Label(frameMeio, text="", width=215,height=1, anchor=NW, font=('Arial 1'), bg=co0)
+    l_linha.place(x=309, y=207)
+    l_sumario = Label(frameMeio, text="total Saldo       ".upper(), anchor=NW, font=('Verdana 12'), bg=co1, fg=co5)
+    l_sumario.place(x=309, y=190)
+    l_sumario = Label(frameMeio, text="R${:,.2f}".format(valor[2]), anchor=NW, font=('arial 17') ,bg=co1, fg=co7)
+    l_sumario.place(x=309, y=220)
+
+resumo()
 porcentagem()
 grafico_bar()
 janela.mainloop()
