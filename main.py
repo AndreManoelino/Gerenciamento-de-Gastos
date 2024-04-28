@@ -4,6 +4,7 @@ from PIL import Image, ImageTk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.pyplot as plt
 
+from tkcalendar import DateEntry, Calendar
 # Definição das cores
 co0 = "#2e2d2b" # Preto
 co1 = "#feffff" # Branca
@@ -109,7 +110,7 @@ def resumo():
 
     l_linha = Label(frameMeio, text="", width=215, height=1, anchor=NW, font=('Arial 1'), bg=co0)
     l_linha.place(x=309, y=52)
-    l_sumario = Label(frameMeio, text="total Renda Mensal".upper(), anchor=NW, font=('Verdana 12'), bg=co1, fg=co5)
+    l_sumario = Label(frameMeio, text="total Renda Mensal        ".upper(), anchor=NW, font=('Verdana 12'), bg=co1, fg=co5)
     l_sumario.place(x=309, y=35)
     l_sumario = Label(frameMeio, text="R${:,.2f}".format(valor[0]), anchor=NW, font=('arial 17'), bg=co1, fg=co7)
     l_sumario.place(x=309, y=70)
@@ -123,7 +124,7 @@ def resumo():
 
     l_linha = Label(frameMeio, text="", width=215, height=1, anchor=NW, font=('Arial 1'), bg=co0)
     l_linha.place(x=309, y=207)
-    l_sumario = Label(frameMeio, text="total Saldo".upper(), anchor=NW, font=('Verdana 12'), bg=co1, fg=co5)
+    l_sumario = Label(frameMeio, text="total Saldo                      ".upper(), anchor=NW, font=('Verdana 12'), bg=co1, fg=co5)
     l_sumario.place(x=309, y=190)
     l_sumario = Label(frameMeio, text="R${:,.2f}".format(valor[2]), anchor=NW, font=('arial 17'), bg=co1, fg=co7)
     l_sumario.place(x=309, y=220)
@@ -168,10 +169,10 @@ app_tabela.place(x=5, y=309)
 
 def mostrar_renda():
     tabela_head = ['#id', 'Categoria', 'Data', 'Quantia']
-    lista_items = [[0, 'Categoria A', '2024-04-27', 1000],
-                   [1, 'Categoria B', '2024-04-27', 1500],
-                   [2, 'Categoria C', '2024-04-27', 2000],
-                   [3, 'Categoria D', '2024-04-27', 2500]]
+    lista_items = [[0, 'A', '29/05/2024', '1.800,00'],
+                   [1, 'B', '29/05/2024', '800,00'],
+                   [2, ' C', '29/05/2024', '350,00'],
+                   [3, ' D', '29/05/2024', '798.00']]
 
     tree = ttk.Treeview(frame_renda, selectmode="extended", columns=tabela_head, show="headings")
 
@@ -203,7 +204,7 @@ l_info = Label(frame_operacoes, text="Insira novas despesas", height=1, anchor=N
 l_info.place(x=10, y=10)
 
 l_categoria = Label(frame_operacoes, text="Categoria", height=1, anchor=NW, font=('Ivy 10'), bg=co1, fg=co4)
-l_categoria.place(x=80, y=40)
+l_categoria.place(x=10, y=38)
 
 # Pegando categorias
 
@@ -216,6 +217,43 @@ for i in categoria_funcao:
 combo_categoria_despesas = ttk.Combobox(frame_operacoes, width=10, font=('Ivy 10'))
 combo_categoria_despesas['values'] = (categoria)
 combo_categoria_despesas.place(x=110, y=41)
+
+#Despesas-------------------------------------------------------------------
+l_despesas = Label(frame_operacoes, text='Data', height=1,anchor=NW, font=('Ivy 10'), bg=co1, fg=co4)
+l_despesas.place(x=10,y=70)
+e_cal_despesas = DateEntry(frame_operacoes,wigth=12,background='darkblue', foreground='white',borderwigth=2, year=2024)
+e_cal_despesas.place(x=110,y=71)
+
+a_valor_despesas = Label(frame_operacoes, text='Quantia Total', height=1,anchor=NW, font=('Ivy 10'), bg=co1, fg=co4)
+a_valor_despesas.place(x=8,y=100)
+e_valor_despesas = Entry(frame_operacoes,width=14, justify='left', relief='solid')
+e_valor_despesas.place(x=110,y=100)
+
+# Botão de inserir
+
+L_adicionar = Label(frame_operacoes, text="Adicionar ",height=1, anchor=NW, font=('Ivy 10'), bg=co1, fg=co4)
+L_adicionar.place(x=7,y=130)
+
+img_add_despesas = Image.open('add.png')
+img_add_despesas = img_add_despesas.resize((5, 5))
+img_add_despesas = ImageTk.PhotoImage(img_add_despesas)
+botao_inserir_despesas = Button(frame_operacoes, image=img_add_despesas, text="Adicionar".upper(), width=80, compound=LEFT,anchor=NW, font=('Ivy 7 bold'), bg=co1, fg=co2,overrelief=RIDGE)
+botao_inserir_despesas.place(x=110,y=131)
+
+
+# Botão de excluir
+
+L_excluir = Label(frame_operacoes, text="Excluir Ações",height=1, anchor=NW, font=('Ivy 10'), bg=co1, fg=co4)
+L_excluir.place(x=10,y=191)
+
+img_delete_despesas = Image.open('remover.png')
+img_delete_despesas = img_delete_despesas.resize((5, 5))
+img_delete_despesas = ImageTk.PhotoImage(img_delete_despesas)
+botao_inserir_despesas = Button(frame_operacoes, image=img_delete_despesas, text="Remover".upper(), width=80, compound=LEFT,anchor=NW, font=('Ivy 7 bold'), bg=co1, fg=co2,overrelief=RIDGE)
+botao_inserir_despesas.place(x=120,y=190)
+
+
+
 
 
 janela.mainloop()
