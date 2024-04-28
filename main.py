@@ -149,24 +149,28 @@ def resumo():
 
 # funçãp gráfico pie
 def grafico_pie():
-    figura = plt.Figure(fgsize=(5,3), dpi=90)
-    ax = figura.add_subplot(100)
+   # Criando  figura e atribuindo  objetos de eixo
+    figura = plt.Figure(figsize=(5, 3), dpi=90)
+    ax = figura.add_subplot(111)
 
     lista_valores = [345,225,534]
     lista_categorias = ['Renda', 'Despesa', 'Saldo']
 
-    #only "explode" the 2nd slice (i.e. 'hogs')
+    #only "explode" the 2nd slice (i.e. 'Hogs')
 
     explode = []
     for i in lista_categorias:
         explode.append(0.05)
-    
-    ax.pie(lista_valores, explode=explode, wedgprops=dict(width=0.2), autopct='%1.f%%', colors=colors, shadow=True,startangle=90)
+
+    ax.pie(lista_valores, explode=explode, wedgeprops=dict(width=0.2), autopct='%1.1f%%', colors=colors,shadow=True, startangle=90)
     ax.legend(lista_categorias, loc="center right", bbox_to_anchor=(1.55, 0.50))
 
     canva_categoria = FigureCanvasTkAgg(figura, frame_gra_pie)
     canva_categoria.get_tk_widget().grid(row=0, column=0)
 
+
+
+grafico_pie()
 resumo()
 porcentagem()
 grafico_bar()
