@@ -22,6 +22,8 @@ co7 = "#3fbfb9"
 co8 = "#263238"
 co9 = "#e9edf5"
 
+
+
 # Convertendo cores hexadecimais para RGB
 def hex_to_rgb(hex_color):
     return tuple(int(hex_color[i:i+2], 16) / 255.0 for i in (1, 3, 5))
@@ -48,6 +50,9 @@ frameMeio.grid(row=1, column=0, pady=1, padx=0, stick=NSEW)
 
 frameBaixo = Frame(janela, width=1043, height=300, bg=co1, relief="flat")
 frameBaixo.grid(row=2, column=0, pady=0, padx=10, stick=NSEW)
+
+frame_gra_pie = Frame(frameMeio, width=580, height=250, bg=co2)
+frame_gra_pie.place(x=415, y=5)
 
 # Inserindo uma logo para o meu app no frameCima.
 # acessando  a imagem
@@ -123,24 +128,44 @@ def resumo():
 
     l_linha = Label(frameMeio, text="", width=215,height=1, anchor=NW, font=('Arial 1'), bg=co0)
     l_linha.place(x=309, y=52)
-    l_sumario = Label(frameMeio, text="total Renda Mensal      ".upper(), anchor=NW, font=('Verdana 12'), bg=co1, fg=co5)
+    l_sumario = Label(frameMeio, text="total Renda Mensal ".upper(), anchor=NW, font=('Verdana 12'), bg=co1, fg=co5)
     l_sumario.place(x=309, y=35)
     l_sumario = Label(frameMeio, text="R${:,.2f}".format(valor[0]), anchor=NW, font=('arial 17') ,bg=co1, fg=co7)
     l_sumario.place(x=309, y=70)
 
     l_linha = Label(frameMeio, text="", width=215,height=1, anchor=NW, font=('Arial 1'), bg=co0)
     l_linha.place(x=309, y=132)
-    l_sumario = Label(frameMeio, text="total Despesas Mensais      ".upper(), anchor=NW, font=('Verdana 12'), bg=co1, fg=co5)
+    l_sumario = Label(frameMeio, text="total Despesas Mensais ".upper(), anchor=NW, font=('Verdana 12'), bg=co1, fg=co5)
     l_sumario.place(x=309, y=115)
     l_sumario = Label(frameMeio, text="R${:,.2f}".format(valor[1]), anchor=NW, font=('arial 17') ,bg=co1, fg=co7)
     l_sumario.place(x=309, y=150)
 
     l_linha = Label(frameMeio, text="", width=215,height=1, anchor=NW, font=('Arial 1'), bg=co0)
     l_linha.place(x=309, y=207)
-    l_sumario = Label(frameMeio, text="total Saldo       ".upper(), anchor=NW, font=('Verdana 12'), bg=co1, fg=co5)
+    l_sumario = Label(frameMeio, text="total Saldo  ".upper(), anchor=NW, font=('Verdana 12'), bg=co1, fg=co5)
     l_sumario.place(x=309, y=190)
     l_sumario = Label(frameMeio, text="R${:,.2f}".format(valor[2]), anchor=NW, font=('arial 17') ,bg=co1, fg=co7)
     l_sumario.place(x=309, y=220)
+
+# funçãp gráfico pie
+def grafico_pie():
+    figura = plt.Figure(fgsize=(5,3), dpi=90)
+    ax = figura.add_subplot(100)
+
+    lista_valores = [345,225,534]
+    lista_categorias = ['Renda', 'Despesa', 'Saldo']
+
+    #only "explode" the 2nd slice (i.e. 'hogs')
+
+    explode = []
+    for i in lista_categorias:
+        explode.append(0.05)
+    
+    ax.pie(lista_valores, explode=explode, wedgprops=dict(width=0.2), autopct='%1.f%%', colors=colors, shadow=True,startangle=90)
+    ax.legend(lista_categorias, loc="center right", bbox_to_anchor=(1.55, 0.50))
+
+    canva_categoria = FigureCanvasTkAgg(figura, frame_gra_pie)
+    canva_categoria.get_tk_widget().grid(row=0, column=0)
 
 resumo()
 porcentagem()
