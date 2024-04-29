@@ -1,8 +1,13 @@
 from tkinter import *
 from tkinter import ttk
+from tkinter import messagebox
 from PIL import Image, ImageTk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.pyplot as plt
+
+import criandobd
+# importando funções da view
+from view import  bar_valores, inserir_categoria,inserir_gastos,inserir_receita,ver_categoria
 
 from tkcalendar import DateEntry, Calendar
 # Definição das cores
@@ -49,6 +54,63 @@ app_img = ImageTk.PhotoImage(app_img)
 app_logo = Label(frameCima, image=app_img, text="Gerenciamento ", width=300, compound=LEFT, padx=5, relief=RAISED, anchor=NW, font=('Verdana 20 bold'), bg=co1, fg=co4)
 app_logo.pack()
 
+# criando funções para o app deixar de se estático e definindo tree como global
+
+global tree
+
+# Função inserir categoria
+def inserir_categoria_b():
+    nome = e_categoria.get()
+
+    lista_inserir = [nome]
+    for i in lista_inserir:
+        if i =='':
+            messagebox.showerror('Erro', 'Preencha todos os campos')
+     
+            return
+    # Passando a função para  inserir gastos
+    inserir_categoria(lista_inserir)
+    messagebox.showinfo("Sucesso", "Inserido corretamente todos os dados.")
+
+    e_categoria.delete(0,'end')
+
+    # Pegando os valores da categoria
+    categorias_funcao = ver_categoria()
+    categoria = []
+
+    for i in categorias_funcao:
+        categoria.append(i[1])
+
+    # atualizando lista categorias
+    combo_categoria_despesas['values'] = (categoria)
+
+def inserir_receita_b():
+    nome = 'Receita'
+    data = e_cal_receitas.get()
+    quantia = e_valor_receitas.get()
+
+    lista_inserir = [nome, data, quantia]
+
+    for i in lista_inserir:
+        if i == '':
+            messagebox.showerror('Erro', 'Preencha todos os campos')
+            return
+    # chamando a funçao inserir receitas presente na view
+    inserir_receita(lista_inserir)
+    messagebox.showinfo("Dados inseridos com sucesso")
+
+    e_cal_receitas.delete(0, 'end')
+    e_valor_receitas.delete(0,'end')
+
+    # atualizando dados 
+    mostrar_renda()
+    porcentagem()
+    grafico_bar()
+    resumo()
+    grafico_pie()
+
+
+        
 # Função para porcentagem
 def porcentagem():
     l_nome = Label(frameMeio, text="Porcentagem da Receita gastos", height=1, anchor=NW, font=('Verdana 12'), bg=co1, fg=co4)
@@ -169,10 +231,10 @@ app_tabela.place(x=5, y=309)
 
 def mostrar_renda():
     tabela_head = ['#id', 'Categoria', 'Data', 'Quantia']
-    lista_items = [[0, 'A', '29/05/2024', '1.800,00'],
-                   [1, 'B', '29/05/2024', '800,00'],
-                   [2, ' C', '29/05/2024', '350,00'],
-                   [3, ' D', '29/05/2024', '798.00']]
+    lista_items = [['0', '2', '3', '4'],
+                   ['0', '2', '3', '4'],
+                   ['0', ' 2', '3', '4'],
+                   ['0', ' 2', '3', '4']]
 
     tree = ttk.Treeview(frame_renda, selectmode="extended", columns=tabela_head, show="headings")
 
@@ -249,11 +311,44 @@ L_excluir.place(x=10,y=191)
 img_delete_despesas = Image.open('remover.png')
 img_delete_despesas = img_delete_despesas.resize((5, 5))
 img_delete_despesas = ImageTk.PhotoImage(img_delete_despesas)
-botao_inserir_despesas = Button(frame_operacoes, image=img_delete_despesas, text="Remover".upper(), width=80, compound=LEFT,anchor=NW, font=('Ivy 7 bold'), bg=co1, fg=co2,overrelief=RIDGE)
-botao_inserir_despesas.place(x=120,y=190)
+botao_deletar = Button(frame_operacoes, image=img_delete_despesas, text="Remover".upper(), width=80, compound=LEFT,anchor=NW, font=('Ivy 7 bold'), bg=co1, fg=co2,overrelief=RIDGE)
+botao_deletar.place(x=120,y=190)
+
+# configuração  frame
+l_info = Label(frame_configuracao, text="Insira nova receita", height=1,anchor=NW,font=('Verdana 10 bold'),bg=co1,fg=co4)
+l_info.place(x=10,y=10)
 
 
+# calendario ------------------------------------------------
+l_receitas = Label(frame_configuracao, text='Data', height=1,anchor=NW, font=('Ivy 10'), bg=co1, fg=co4)
+l_receitas.place(x=10,y=40)
+e_cal_receitas = DateEntry(frame_configuracao,wigth=12,background='darkblue', foreground='white',borderwigth=2, year=2024)
+e_cal_receitas.place(x=110,y=41)
 
+a_valor_receitas = Label(frame_configuracao, text='Quantia Total', height=1,anchor=NW, font=('Ivy 10'), bg=co1, fg=co4)
+a_valor_receitas.place(x=8,y=70)
+e_valor_receitas = Entry(frame_configuracao,width=14, justify='left', relief='solid')
+e_valor_receitas.place(x=110,y=71)
+
+
+img_add_receitas = Image.open('add.png')
+img_add_receitas = img_add_receitas.resize((5, 5))
+img_add_receitas = ImageTk.PhotoImage(img_add_receitas)
+botao_inserir_receitas = Button(frame_configuracao,command=inserir_receita_b ,image=img_add_receitas, text="Adicionar".upper(), width=80, compound=LEFT,anchor=NW, font=('Ivy 7 bold'), bg=co1, fg=co2,overrelief=RIDGE)
+botao_inserir_receitas.place(x=110,y=101)
+
+# categorias ---------------------------------
+l_info = Label(frame_configuracao, text="Categoria", height=1,anchor=NW,font=('Verdana 10 bold'),bg=co1,fg=co4)
+l_info.place(x=10,y=160)
+
+e_categoria = Entry(frame_configuracao, width=14,justify='left',relief='solid')
+e_categoria.place(x=110,y=160)
+
+img_add_categoria = Image.open('add.png')
+img_add_categoria = img_add_categoria.resize((5, 5))
+img_add_categoria = ImageTk.PhotoImage(img_add_categoria)
+botao_inserir_categoria = Button(frame_configuracao,command=inserir_categoria_b, image=img_add_categoria, text="Adicionar".upper(), width=80, compound=LEFT,ancho=NW, font=('Ivy 7 bold'), bg=co1, fg=co2,overrelief=RIDGE)
+botao_inserir_categoria.place(x=110,y=190)
 
 
 janela.mainloop()

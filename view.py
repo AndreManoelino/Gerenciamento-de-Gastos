@@ -34,8 +34,13 @@ def deletar_receitas(i):
 def deletar_gastos(i):
     with con:
         cur = con.cursor()
-        query = "DELETE FROM * GGastos WHERE id=?"
+        query = "DELETE FROM * Gastos WHERE id=?"
         cur.execute(query,i)
+
+def deletar_categoria(i):
+    with con:
+        cur=con.cursor()
+        query= "DELETE FROM * Categoria WHERE id=?"
 
 # Funções para ver dados 
 def ver_categoria():
@@ -72,3 +77,20 @@ def ver_gastos():
             lista_items.append(l)
 
     return lista_items
+
+def tabela():
+    gastos = ver_gastos()
+    receitas = ver_receitas()
+    tabela_lista = []
+    for i in gastos:
+        tabela_lista.append(i)
+    for i in receitas:
+        tabela_lista.append(i)
+    return tabela_lista
+
+def bar_valores():
+    # receita total
+    receitas = ver_receitas()
+    receitas_lista = []
+    for i in receitas:
+        receitas_lista.append(i[3])
