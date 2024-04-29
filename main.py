@@ -351,4 +351,7 @@ botao_inserir_categoria = Button(frame_configuracao,command=inserir_categoria_b,
 botao_inserir_categoria.place(x=110,y=190)
 
 
+
+
+
 janela.mainloop()
